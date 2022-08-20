@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DecisionController : MonoBehaviour {
-    public Transform outside;
-
     private enum Direction {Left, Right};
     private enum State {Start, FirstQuestion, SecondQuestion, ThirdQuestion, CheckRotation, Win, Lose};
 
@@ -30,18 +28,18 @@ public class DecisionController : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        audioSource = GetComponent<AudioSource>();
         camera = GameObject.Find("XRRig");
 
         happyMate = GameObject.Find("HappyMate");
         happyMate.SetActive(false);
         angryMate = GameObject.Find("AngryMate");
         angryMate.SetActive(false);
-        state = State.Start;
-        transform.position = new Vector3(0, 2, 0);
 
+        audioSource = GetComponent<AudioSource>();
         clip2 = Resources.Load<AudioClip>("Test1");
         clip3 = Resources.Load<AudioClip>("Test2");
+
+        state = State.Start;
     }
 
     // Update is called once per frame
@@ -50,7 +48,6 @@ public class DecisionController : MonoBehaviour {
         if (time >= 3 && state == State.Start) {
             state = State.FirstQuestion;
             audioSource.Play();
-            // camera.transform.position = new Vector3(camera.transform.position.x, camera.transform.position.y, -25);
         }
 
         if (!audioSource.isPlaying && state != State.Start && state != State.CheckRotation && state != State.Win && state != State.Lose) {
@@ -93,7 +90,7 @@ public class DecisionController : MonoBehaviour {
 
         if (state == State.Win) {
             Debug.Log("WIINNN");
-            transform.position = new Vector3(20, transform.position.y, transform.position.z);
+            camera.transform.position = new Vector3(20, camera.transform.position.y, camera.transform.position.z);
         }
         if (state == State.Lose) {
             Debug.Log("LOOOSEERR");
