@@ -3,30 +3,139 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DecisionController : MonoBehaviour {
+    public Transform outside;
+
+    private enum Direction {Left, Right};
+    private enum State {Start, FirstQuestion, SecondQuestion, ThirdQuestion, CheckRotation, Win, Lose};
+
+    private GameObject camera;
     private AudioSource audioSource;
-    private string state;
+    private AudioClip clip2;
+    private AudioClip clip3;
+    // private AudioClip clip4 = Resources.Load<AudioClip>("../Audio/Test4.mp3");
+    // private AudioClip clip5 = Resources.Load<AudioClip>("../Audio/Test5.mp3");
+    // private AudioClip clip6 = Resources.Load<AudioClip>("../Audio/Test6.mp3");
+    // private AudioClip clip7 = Resources.Load<AudioClip>("../Audio/Test7.mp3");
+
+
+    private State state;
 
     private float time = 0f;
+    private Vector3 prevRotation;
+
+    private GameObject happyMate;
+    private GameObject angryMate;
+
+    private int questionNumber = 1;
 
     // Start is called before the first frame update
     void Start() {
         audioSource = GetComponent<AudioSource>();
-        state = "start";
+        camera = GameObject.Find("XRRig");
+
+        happyMate = GameObject.Find("HappyMate");
+        happyMate.SetActive(false);
+        angryMate = GameObject.Find("AngryMate");
+        angryMate.SetActive(false);
+        state = State.Start;
+        transform.position = new Vector3(0, 2, 0);
+
+        clip2 = Resources.Load<AudioClip>("Test1");
+        clip3 = Resources.Load<AudioClip>("Test2");
     }
 
     // Update is called once per frame
     void Update() {
         time += Time.deltaTime;
-        if (time >= 3 && state == "start") {
-            Debug.Log("Play audio");
-            state = "firstQuestion";
+        if (time >= 3 && state == State.Start) {
+            state = State.FirstQuestion;
             audioSource.Play();
+            // camera.transform.position = new Vector3(camera.transform.position.x, camera.transform.position.y, -25);
         }
 
+        if (!audioSource.isPlaying && state != State.Start && state != State.CheckRotation && state != State.Win && state != State.Lose) {
+            prevRotation = transform.rotation.eulerAngles;
+            state = State.CheckRotation;
+        }
 
+        if (state == State.CheckRotation) {
+            var currRotation = transform.rotation.eulerAngles;
+            if (currRotation.y - prevRotation.y >= 45) {
+                switch (questionNumber) {
+                    case 1:
+                        FirstAction(Direction.Right);
+                        break;
+                    case 2:
+                        SecondAction(Direction.Right);
+                        break;
+                    case 3:
+                        ThirdAction(Direction.Right);
+                        break;
+                }
+                Debug.Log("Play");
+                audioSource.Play();
+            }
+            else if (currRotation.y - prevRotation.y <= -45) {
+                switch (questionNumber) {
+                    case 1:
+                        FirstAction(Direction.Left);
+                        break;
+                    case 2:
+                        SecondAction(Direction.Left);
+                        break;
+                    case 3:
+                        ThirdAction(Direction.Left);
+                        break;
+                }
+                audioSource.Play();
+            }
+        }
 
-        // if (transform.rotation.y >= 45) {
-        //     Debug.Log("")
-        // }
+        if (state == State.Win) {
+            Debug.Log("WIINNN");
+            transform.position = new Vector3(20, transform.position.y, transform.position.z);
+        }
+        if (state == State.Lose) {
+            Debug.Log("LOOOSEERR");
+        }
+    }
+
+    private void FirstAction(Direction direction) {
+        Debug.Log("First");
+        if (direction == Direction.Right) {
+            Debug.Log("Derecha");
+            angryMate.SetActive(true);
+            state = State.ThirdQuestion;
+            questionNumber = 3;
+            audioSource.clip = clip2;
+        } else {
+            Debug.Log("Izquierda");
+            happyMate.SetActive(true);
+            state = State.SecondQuestion;
+            questionNumber = 2;
+            audioSource.clip = clip3;
+        }
+    }
+
+    private void SecondAction(Direction direction) {
+        Debug.Log("Second");
+        if (direction == Direction.Right) {
+            Debug.Log("Derecha");
+            state = State.Win;
+        } else {
+            Debug.Log("Izquierda");
+            state = State.Lose;
+        }
+    }
+
+    private void ThirdAction(Direction direction) {
+        Debug.Log("Third");
+        if (direction == Direction.Right) {
+            Debug.Log("Derecha");
+            state = State.Win;
+        } else {
+            Debug.Log("Izquierda");
+            state = State.Lose;
+        }
     }
 }
