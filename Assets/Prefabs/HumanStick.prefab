@@ -980,7 +980,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3935250642115070515}
   m_Layer: 0
-  m_Name: HumanWithStick
+  m_Name: HumanStick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
