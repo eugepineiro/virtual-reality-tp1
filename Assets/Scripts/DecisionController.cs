@@ -18,13 +18,16 @@ public class DecisionController : MonoBehaviour {
 
     private GameObject camera;
     private AudioSource audioSource;
-    private AudioClip clip2;
-    private AudioClip clip3;
-    // private AudioClip clip4 = Resources.Load<AudioClip>("../Audio/Test4.mp3");
-    // private AudioClip clip5 = Resources.Load<AudioClip>("../Audio/Test5.mp3");
-    // private AudioClip clip6 = Resources.Load<AudioClip>("../Audio/Test6.mp3");
-    // private AudioClip clip7 = Resources.Load<AudioClip>("../Audio/Test7.mp3");
 
+    // private AudioClip audioInit; // Might not need it
+    private AudioClip audioDer;
+    private AudioClip audioDerDer;
+    private AudioClip audioDerDerDer;
+    private AudioClip audioDerDerIzq;
+    private AudioClip audioDerIzq;
+    private AudioClip audioIzq;
+    private AudioClip audioIzqDer;
+    private AudioClip audioIzqIzq;
 
     private State state;
 
@@ -33,6 +36,7 @@ public class DecisionController : MonoBehaviour {
 
     private GameObject happyMate;
     private GameObject angryMate;
+    private GameObject angryMateRock;
     private GameObject deadMate;
     private GameObject deadMateWithGlass;
     private GameObject floorRock;
@@ -46,6 +50,7 @@ public class DecisionController : MonoBehaviour {
         happyMate = GameObject.Find("HappyMate");
         happyMate.SetActive(false);
         angryMate = GameObject.Find("AngryMate");
+        angryMateRock = angryMate.transform.Find("AngryMateRock").gameObject;
         angryMate.SetActive(false);
         deadMate = GameObject.Find("DeadMate");
         deadMate.SetActive(false);
@@ -55,8 +60,15 @@ public class DecisionController : MonoBehaviour {
         floorRock.SetActive(false);
 
         audioSource = GetComponent<AudioSource>();
-        clip2 = Resources.Load<AudioClip>("Test1");
-        clip3 = Resources.Load<AudioClip>("Test2");
+
+        audioDer = Resources.Load<AudioClip>("Audio_der");
+        audioDerDer = Resources.Load<AudioClip>("Audio_der_der");
+        audioDerDerDer = Resources.Load<AudioClip>("Audio_der_der_der");
+        audioDerDerIzq = Resources.Load<AudioClip>("Audio_der_der_izq");
+        audioDerIzq = Resources.Load<AudioClip>("Audio_der_izq");
+        audioIzq = Resources.Load<AudioClip>("Audio_izq");
+        audioIzqDer = Resources.Load<AudioClip>("Audio_izq_der");
+        audioIzqIzq = Resources.Load<AudioClip>("Audio_izq_izq");
 
         state = State.Start;
     }
@@ -135,13 +147,13 @@ public class DecisionController : MonoBehaviour {
             angryMate.SetActive(true);
             state = State.ThirdQuestion;
             questionNumber = 3;
-            audioSource.clip = clip3;
+            audioSource.clip = audioDer;
         } else {
             Debug.Log("Izquierda"); // Give bread, mate gates happy
             happyMate.SetActive(true);
             state = State.SecondQuestion;
             questionNumber = 2;
-            audioSource.clip = clip2;
+            audioSource.clip = audioIzq;
         }
     }
 
@@ -152,10 +164,11 @@ public class DecisionController : MonoBehaviour {
             deadMateWithGlass.SetActive(true);
             state = State.FourthQuestion;
             questionNumber = 4;
-            // audioSource.clip = clip4;
+            audioSource.clip = audioIzqDer;
         } else {
             Debug.Log("Izquierda");
             state = State.Lose; // Drink spider venom, you die
+            audioSource.clip = audioIzqIzq;
             // die
         }
     }
@@ -165,13 +178,16 @@ public class DecisionController : MonoBehaviour {
         if (direction == Direction.Right) {
             Debug.Log("Derecha");  // Dodge rock, grab rock
             floorRock.SetActive(true);
+            angryMateRock.SetActive(false);
             // activate village music;
             state = State.FifthQuestion;
             questionNumber = 5;
-            // audioSource.clip = clip5;
+            audioSource.clip = audioDerDer;
         } else {
             Debug.Log("Izquierda");  // Rock hits you, you die
+            angryMateRock.SetActive(false);
             state = State.Lose;
+            audioSource.clip = audioDerIzq;
         }
     }
 
@@ -180,10 +196,13 @@ public class DecisionController : MonoBehaviour {
         if (direction == Direction.Right) {
             Debug.Log("Derecha");  // Refuse the deal, mate kills you
             state = State.Lose;
+            audioSource.mute = true;
+            // audioSource.clip = audioIzqDerDer;
             // die
         } else {
             Debug.Log("Izquierda");  // Take the deal and win
             state = State.Win;
+            audioSource.clip = audioDerDerDer;
         }
     }
 
@@ -192,10 +211,14 @@ public class DecisionController : MonoBehaviour {
         if (direction == Direction.Right) {  // Build picaxe, escape
             Debug.Log("Derecha");
             state = State.Win;
+            audioSource.clip = audioDerDerDer;
         } else {
             Debug.Log("Izquierda");  // Throw rock, lose
             deadMate.SetActive(true);
+            floorRock.SetActive(false);
+            angryMate.SetActive(false);
             state = State.Lose;
+            audioSource.clip = audioDerDerIzq;
         }
     }
 }
