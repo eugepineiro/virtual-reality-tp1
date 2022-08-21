@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.15700783, g: 0.1801537, b: 0.19495524, a: 1}
+  m_IndirectSpecularColor: {r: 0.15700783, g: 0.18015373, b: 0.19495521, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -221,7 +221,7 @@ Transform:
   m_GameObject: {fileID: 59507206}
   m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: -23.6, y: 20, z: 50}
-  m_LocalScale: {x: 40, y: 1, z: 50}
+  m_LocalScale: {x: 40, y: 1, z: 53.165}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2055414284}
@@ -2799,6 +2799,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a2a9c34df4095f47b9ca8f975175f5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_Device: 0
+  m_PoseSource: 2
+  m_PoseProviderComponent: {fileID: 0}
+  m_TrackingType: 0
+  m_UpdateType: 0
+  m_UseRelativeTransform: 0
 --- !u!1 &986652140 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7854063647101778401, guid: 9a6c0482c1e698945943e0910da2ecde, type: 3}
@@ -4152,6 +4158,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2483b9bd782f9449a5972b61b7d51a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_CameraFloorOffsetObject: {fileID: 0}
+  m_RequestedTrackingMode: 0
+  m_TrackingOriginMode: 1
+  m_TrackingSpace: 0
+  m_CameraYOffset: 1.36144
 --- !u!4 &1454774937
 Transform:
   m_ObjectHideFlags: 0
@@ -4196,7 +4207,7 @@ Transform:
   m_GameObject: {fileID: 1471650003}
   m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: -23.6, y: 20, z: -50}
-  m_LocalScale: {x: 40, y: 1, z: 50}
+  m_LocalScale: {x: 40, y: 1, z: 52.38}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 2055414284}
