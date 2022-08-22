@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DecisionController : MonoBehaviour {
@@ -16,7 +14,7 @@ public class DecisionController : MonoBehaviour {
         Lose
     };
 
-    private GameObject camera;
+    private GameObject xrrigCamera;
     private AudioSource audioSource;
 
     // private AudioClip audioInit; // Might not need it
@@ -45,7 +43,7 @@ public class DecisionController : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        camera = GameObject.Find("XRRig");
+        xrrigCamera = GameObject.Find("XRRig");
 
         happyMate = GameObject.Find("HappyMate");
         happyMate.SetActive(false);
@@ -133,7 +131,7 @@ public class DecisionController : MonoBehaviour {
 
         if (state == State.Win) {
             Debug.Log("WIINNN");
-            camera.transform.position = new Vector3(20, camera.transform.position.y, camera.transform.position.z);
+            xrrigCamera.transform.position = new Vector3(20, xrrigCamera.transform.position.y, xrrigCamera.transform.position.z);
         }
         if (state == State.Lose) {
             Debug.Log("LOOOSEERR");
