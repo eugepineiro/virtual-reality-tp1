@@ -4,23 +4,32 @@ using UnityEngine;
 
 public class SitMateController : MonoBehaviour
 {
+    private GameObject deadMate;
+    private GameObject sitMate;
+
     // Start is called before the first frame update
     void Start()
     {
-        deadMate = this.transform.Find("DeadMateShot");
+        deadMate = this.transform.Find("DeadMateShot").gameObject;
         deadMate.SetActive(false);
+        sitMate = this.transform.Find("SitMate").gameObject;
+        sitMate.SetActive(true);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    void onTriggerEnter(Collider Player)
+    void OnTriggerEnter(Collider collider)
     {
-        this.SetActive(false);
-        deadMate.position = this.position
-        deadMate.SetActive(true);
+        if (collider.gameObject.name == "RockShooter") {
+            Debug.Log("COLLISION");
+            sitMate.SetActive(false);
+            deadMate.SetActive(true);
+        } else {
+            Debug.Log("?????????????????????");
+        }
     }
 }
