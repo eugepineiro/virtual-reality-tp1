@@ -22,6 +22,7 @@ public class DecisionController : MonoBehaviour {
     private GameObject xrrigCamera;
     private AudioSource audioSource;
     private AudioSource townAudioSource;
+    private AudioSource festivalAudioSource;
 
     private AudioClip audioInit;
     private AudioClip audioIntro;
@@ -109,6 +110,7 @@ public class DecisionController : MonoBehaviour {
             Debug.Log("WIN");
             xrrigCamera.transform.position = new Vector3(20, xrrigCamera.transform.position.y, xrrigCamera.transform.position.z);
             townAudioSource.Play();
+            festivalAudioSource.volume = 0.6f;
         }
         if (state == State.Lose && !audioSource.isPlaying) {
             SceneManager.LoadScene(deadScene);
@@ -156,10 +158,11 @@ public class DecisionController : MonoBehaviour {
             Debug.Log("Derecha");  // Dodge rock, grab rock
             floorRock.SetActive(true);
             angryMateRock.SetActive(false);
-            // activate village music;
             state = State.FifthQuestion;
             questionNumber = 5;
             audioSource.clip = audioDerDer;
+            festivalAudioSource.volume = 0.1f;
+            festivalAudioSource.Play();
         } else {
             Debug.Log("Izquierda");  // Rock hits you, you die
             angryMateRock.SetActive(false);
@@ -227,6 +230,7 @@ public class DecisionController : MonoBehaviour {
         rockShooter.SetActive(false);
         audioSource = GetComponent<AudioSource>();
         townAudioSource = GameObject.Find("Town").GetComponent<AudioSource>();
+        festivalAudioSource = GameObject.Find("BonFire Festival").GetComponent<AudioSource>();
     }
 
     private void fetchAudioClips() {
