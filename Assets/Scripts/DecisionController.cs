@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DecisionController : MonoBehaviour {
     private enum Direction {Left, Right};
@@ -15,10 +16,12 @@ public class DecisionController : MonoBehaviour {
         Shooting
     };
 
+    [SerializeField] private string deadScene;
     private GameObject xrrigCamera;
     private AudioSource audioSource;
 
-    // private AudioClip audioInit; // Might not need it
+    private AudioClip audioInit;
+    private AudioClip audioIntro;
     private AudioClip audioDer;
     private AudioClip audioDerDer;
     private AudioClip audioDerDerDer;
@@ -49,41 +52,8 @@ public class DecisionController : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
-        xrrigCamera = GameObject.Find("XRRig");
-
-        shotMatesAmount = 2;
-        shotMates = new GameObject[shotMatesAmount];
-        for (int i = 0; i < shotMatesAmount; i++) {
-            shotMates[i] = GameObject.Find(string.Format("ShotMate{0}", i+1));
-        }
-
-        happyMate = GameObject.Find("HappyMate");
-        happyMateGlass = happyMate.transform.Find("Glass").gameObject;
-        happyMate.SetActive(false);
-        angryMate = GameObject.Find("AngryMate");
-        angryMateRock = angryMate.transform.Find("AngryMateRock").gameObject;
-        angryMate.SetActive(false);
-        deadMate = GameObject.Find("DeadMate");
-        deadMate.SetActive(false);
-        deadMateWithGlass = GameObject.Find("DeadMateWithGlass");
-        deadMateWithGlass.SetActive(false);
-        floorRock = GameObject.Find("FloorRock");
-        floorRock.SetActive(false);
-        rockShooter = GameObject.Find("RockShooter");
-        rockShooter.SetActive(false);
-
-        audioSource = GetComponent<AudioSource>();
-
-        audioDer = Resources.Load<AudioClip>("Audio_der");
-        audioDerDer = Resources.Load<AudioClip>("Audio_der_der");
-        audioDerDerDer = Resources.Load<AudioClip>("Audio_der_der_der");
-        audioDerDerIzq = Resources.Load<AudioClip>("Audio_der_der_izq");
-        audioDerIzq = Resources.Load<AudioClip>("Audio_der_izq");
-        audioIzq = Resources.Load<AudioClip>("Audio_izq");
-        audioIzqDer = Resources.Load<AudioClip>("Audio_izq_der");
-        audioIzqIzq = Resources.Load<AudioClip>("Audio_izq_izq");
-        audioShot = Resources.Load<AudioClip>("Audio_shot");
-
+        fetchGameObjects();
+        fetchAudioClips();
         state = State.Start;
     }
 
@@ -92,6 +62,7 @@ public class DecisionController : MonoBehaviour {
         time += Time.deltaTime;
         if (time >= 3 && state == State.Start) {
             state = State.FirstQuestion;
+            audioSource.clip = audioIntro;
             audioSource.Play();
         }
 
@@ -166,6 +137,7 @@ public class DecisionController : MonoBehaviour {
             xrrigCamera.transform.position = new Vector3(20, xrrigCamera.transform.position.y, xrrigCamera.transform.position.z);
         }
         if (state == State.Lose && !audioSource.isPlaying) {
+            SceneManager.LoadScene(deadScene);
             Debug.Log("LOOOSEERR");
         }
     }
@@ -252,5 +224,43 @@ public class DecisionController : MonoBehaviour {
             state = State.Lose;
             audioSource.clip = audioDerDerIzq;
         }
+    }
+
+    private void fetchGameObjects() {
+        xrrigCamera = GameObject.Find("XRRig");
+        shotMatesAmount = 2;
+        shotMates = new GameObject[shotMatesAmount];
+        for (int i = 0; i < shotMatesAmount; i++) {
+            shotMates[i] = GameObject.Find(string.Format("ShotMate{0}", i+1));
+        }
+        happyMate = GameObject.Find("HappyMate");
+        happyMateGlass = happyMate.transform.Find("Glass").gameObject;
+        happyMate.SetActive(false);
+        angryMate = GameObject.Find("AngryMate");
+        angryMateRock = angryMate.transform.Find("AngryMateRock").gameObject;
+        angryMate.SetActive(false);
+        deadMate = GameObject.Find("DeadMate");
+        deadMate.SetActive(false);
+        deadMateWithGlass = GameObject.Find("DeadMateWithGlass");
+        deadMateWithGlass.SetActive(false);
+        floorRock = GameObject.Find("FloorRock");
+        floorRock.SetActive(false);
+        rockShooter = GameObject.Find("RockShooter");
+        rockShooter.SetActive(false);
+        audioSource = GetComponent<AudioSource>();
+    }
+
+    private void fetchAudioClips() {
+        audioInit = Resources.Load<AudioClip>("Audio_inicial");
+        audioIntro = Resources.Load<AudioClip>("Audio_intro");
+        audioDer = Resources.Load<AudioClip>("Audio_der");
+        audioDerDer = Resources.Load<AudioClip>("Audio_der_der");
+        audioDerDerDer = Resources.Load<AudioClip>("Audio_der_der_der");
+        audioDerDerIzq = Resources.Load<AudioClip>("Audio_der_der_izq");
+        audioDerIzq = Resources.Load<AudioClip>("Audio_der_izq");
+        audioIzq = Resources.Load<AudioClip>("Audio_izq");
+        audioIzqDer = Resources.Load<AudioClip>("Audio_izq_der");
+        audioIzqIzq = Resources.Load<AudioClip>("Audio_izq_izq");
+        audioShot = Resources.Load<AudioClip>("Audio_shot");
     }
 }
