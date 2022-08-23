@@ -1,10 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 
 public class DecisionController : MonoBehaviour {
     private enum Direction {Left, Right};
     private enum State {
         Start, 
+        Intro, 
         FirstQuestion, 
         SecondQuestion, 
         ThirdQuestion, 
@@ -31,12 +33,8 @@ public class DecisionController : MonoBehaviour {
     private AudioClip audioIzqDer;
     private AudioClip audioIzqIzq;
     private AudioClip audioShot;
-
     private State state;
-
-    private float time = 0f;
     private Vector3 prevRotation;
-
     private GameObject happyMate;
     private GameObject happyMateGlass;
     private GameObject angryMate;
@@ -47,26 +45,33 @@ public class DecisionController : MonoBehaviour {
     private GameObject rockShooter;
     private GameObject[] shotMates;
     private int shotMatesAmount;
-
     private int questionNumber = 1;
+    private float time = 0f;
+    private Action<Direction>[] questionActions;
 
     // Start is called before the first frame update
     void Start() {
         fetchGameObjects();
         fetchAudioClips();
         state = State.Start;
+        questionActions = new Action<Direction>[5] {FirstAction, SecondAction, ThirdAction, FourthAction, FifthAction};
     }
 
     // Update is called once per frame
     void Update() {
         time += Time.deltaTime;
         if (time >= 3 && state == State.Start) {
-            state = State.FirstQuestion;
+            state = State.Intro;
             audioSource.clip = audioIntro;
             audioSource.Play();
         }
+        if (time >= 16 && state == State.Intro) {
+            state = State.FirstQuestion;
+            audioSource.clip = audioInit;
+            audioSource.Play();
+        }
 
-        if (!audioSource.isPlaying && state != State.Start && state != State.CheckRotation && state != State.Win && state != State.Lose && state != State.Shooting) {
+        if (isStateInQuestion() && !audioSource.isPlaying) {
             prevRotation = transform.rotation.eulerAngles;
             state = State.CheckRotation;
         }
@@ -74,44 +79,11 @@ public class DecisionController : MonoBehaviour {
         if (state == State.CheckRotation) {
             var currRotation = transform.rotation.eulerAngles;
             if (currRotation.y - prevRotation.y >= 45) {
-                switch (questionNumber) {
-                    case 1:
-                        FirstAction(Direction.Right);
-                        break;
-                    case 2:
-                        SecondAction(Direction.Right);
-                        break;
-                    case 3:
-                        ThirdAction(Direction.Right);
-                        break;
-                    case 4:
-                        FourthAction(Direction.Right);
-                        break;
-                    case 5:
-                        FifthAction(Direction.Right);
-                        break;
-                }
-                Debug.Log("Play");
+                questionActions[questionNumber-1](Direction.Right);
                 audioSource.Play();
             }
             else if (currRotation.y - prevRotation.y <= -45) {
-                switch (questionNumber) {
-                    case 1:
-                        FirstAction(Direction.Left);
-                        break;
-                    case 2:
-                        SecondAction(Direction.Left);
-                        break;
-                    case 3:
-                        ThirdAction(Direction.Left);
-                        break;
-                    case 4:
-                        FourthAction(Direction.Left);
-                        break;
-                    case 5:
-                        FifthAction(Direction.Left);
-                        break;
-                }
+                questionActions[questionNumber-1](Direction.Left);
                 audioSource.Play();
             }
         }
@@ -133,12 +105,12 @@ public class DecisionController : MonoBehaviour {
         }
 
         if (state == State.Win && !audioSource.isPlaying) {
-            Debug.Log("WIINNN");
+            Debug.Log("WIN");
             xrrigCamera.transform.position = new Vector3(20, xrrigCamera.transform.position.y, xrrigCamera.transform.position.z);
         }
         if (state == State.Lose && !audioSource.isPlaying) {
             SceneManager.LoadScene(deadScene);
-            Debug.Log("LOOOSEERR");
+            Debug.Log("LOSE");
         }
     }
 
@@ -224,6 +196,10 @@ public class DecisionController : MonoBehaviour {
             state = State.Lose;
             audioSource.clip = audioDerDerIzq;
         }
+    }
+
+    private bool isStateInQuestion() {
+        return state == State.FirstQuestion || state == State.SecondQuestion || state == State.ThirdQuestion || state == State.FourthQuestion || state == State.FifthQuestion;
     }
 
     private void fetchGameObjects() {
