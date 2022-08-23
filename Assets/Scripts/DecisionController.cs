@@ -111,6 +111,7 @@ public class DecisionController : MonoBehaviour {
             xrrigCamera.transform.position = new Vector3(20, xrrigCamera.transform.position.y, xrrigCamera.transform.position.z);
             townAudioSource.Play();
             festivalAudioSource.volume = 0.6f;
+            if (!festivalAudioSource.isPlaying) festivalAudioSource.Play();
         }
         if (state == State.Lose && !audioSource.isPlaying) {
             SceneManager.LoadScene(deadScene);
