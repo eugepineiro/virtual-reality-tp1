@@ -109,7 +109,7 @@ public class DecisionController : MonoBehaviour {
 
         if (state == State.Win && !audioSource.isPlaying) {
             Debug.Log("WIN");
-            xrrigCamera.transform.position = new Vector3(20, xrrigCamera.transform.position.y, xrrigCamera.transform.position.z);
+            xrrigCamera.transform.position = new Vector3(39, xrrigCamera.transform.position.y, 5);
             townAudioSource.Play();
             festivalAudioSource.volume = 0.6f;
             if (!festivalAudioSource.isPlaying) festivalAudioSource.Play();
