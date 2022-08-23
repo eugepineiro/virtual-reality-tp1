@@ -161,11 +161,11 @@ public class DecisionController : MonoBehaviour {
             }
         }
 
-        if (state == State.Win) {
+        if (state == State.Win && !audioSource.isPlaying) {
             Debug.Log("WIINNN");
             xrrigCamera.transform.position = new Vector3(20, xrrigCamera.transform.position.y, xrrigCamera.transform.position.z);
         }
-        if (state == State.Lose) {
+        if (state == State.Lose && !audioSource.isPlaying) {
             Debug.Log("LOOOSEERR");
         }
     }
