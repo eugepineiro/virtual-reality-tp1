@@ -11,7 +11,8 @@ public class DecisionController : MonoBehaviour {
         FifthQuestion, 
         CheckRotation, 
         Win, 
-        Lose
+        Lose,
+        Shooting
     };
 
     private GameObject xrrigCamera;
@@ -26,6 +27,7 @@ public class DecisionController : MonoBehaviour {
     private AudioClip audioIzq;
     private AudioClip audioIzqDer;
     private AudioClip audioIzqIzq;
+    private AudioClip audioShot;
 
     private State state;
 
@@ -33,11 +35,15 @@ public class DecisionController : MonoBehaviour {
     private Vector3 prevRotation;
 
     private GameObject happyMate;
+    private GameObject happyMateGlass;
     private GameObject angryMate;
     private GameObject angryMateRock;
     private GameObject deadMate;
     private GameObject deadMateWithGlass;
     private GameObject floorRock;
+    private GameObject rockShooter;
+    private GameObject[] shotMates;
+    private int shotMatesAmount;
 
     private int questionNumber = 1;
 
@@ -45,7 +51,14 @@ public class DecisionController : MonoBehaviour {
     void Start() {
         xrrigCamera = GameObject.Find("XRRig");
 
+        shotMatesAmount = 2;
+        shotMates = new GameObject[shotMatesAmount];
+        for (int i = 0; i < shotMatesAmount; i++) {
+            shotMates[i] = GameObject.Find(string.Format("ShotMate{0}", i+1));
+        }
+
         happyMate = GameObject.Find("HappyMate");
+        happyMateGlass = happyMate.transform.Find("Glass").gameObject;
         happyMate.SetActive(false);
         angryMate = GameObject.Find("AngryMate");
         angryMateRock = angryMate.transform.Find("AngryMateRock").gameObject;
@@ -56,6 +69,8 @@ public class DecisionController : MonoBehaviour {
         deadMateWithGlass.SetActive(false);
         floorRock = GameObject.Find("FloorRock");
         floorRock.SetActive(false);
+        rockShooter = GameObject.Find("RockShooter");
+        rockShooter.SetActive(false);
 
         audioSource = GetComponent<AudioSource>();
 
@@ -67,6 +82,7 @@ public class DecisionController : MonoBehaviour {
         audioIzq = Resources.Load<AudioClip>("Audio_izq");
         audioIzqDer = Resources.Load<AudioClip>("Audio_izq_der");
         audioIzqIzq = Resources.Load<AudioClip>("Audio_izq_izq");
+        audioShot = Resources.Load<AudioClip>("Audio_shot");
 
         state = State.Start;
     }
@@ -79,7 +95,7 @@ public class DecisionController : MonoBehaviour {
             audioSource.Play();
         }
 
-        if (!audioSource.isPlaying && state != State.Start && state != State.CheckRotation && state != State.Win && state != State.Lose) {
+        if (!audioSource.isPlaying && state != State.Start && state != State.CheckRotation && state != State.Win && state != State.Lose && state != State.Shooting) {
             prevRotation = transform.rotation.eulerAngles;
             state = State.CheckRotation;
         }
@@ -129,6 +145,22 @@ public class DecisionController : MonoBehaviour {
             }
         }
 
+        if (state == State.Shooting) {
+            bool foundActiveMate = false;
+            for (int i = 0; i < shotMatesAmount; i++) {
+                if (shotMates[i].transform.Find("SitMate").gameObject.activeInHierarchy) {
+                    foundActiveMate = true;
+                    break;
+                }
+            }
+            if (!foundActiveMate) {
+                rockShooter.SetActive(false);
+                state = State.Win;
+                audioSource.clip = audioDerDerDer;
+                audioSource.Play();
+            }
+        }
+
         if (state == State.Win) {
             Debug.Log("WIINNN");
             xrrigCamera.transform.position = new Vector3(20, xrrigCamera.transform.position.y, xrrigCamera.transform.position.z);
@@ -157,6 +189,7 @@ public class DecisionController : MonoBehaviour {
 
     private void SecondAction(Direction direction) {
         Debug.Log("Second");
+        happyMateGlass.SetActive(false);
         if (direction == Direction.Right) { // Give drink to another mate, he dies
             Debug.Log("Derecha");
             deadMateWithGlass.SetActive(true);
@@ -199,8 +232,9 @@ public class DecisionController : MonoBehaviour {
             // die
         } else {
             Debug.Log("Izquierda");  // Take the deal and win
-            state = State.Win;
-            audioSource.clip = audioDerDerDer;
+            rockShooter.SetActive(true);
+            audioSource.clip = audioShot;
+            state = State.Shooting;
         }
     }
 
