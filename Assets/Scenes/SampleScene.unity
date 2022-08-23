@@ -5344,7 +5344,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3560cdd8046aeb1429719bb28171b2b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  deadScene: 
+  deadScene: Dead
 --- !u!1001 &906121747
 PrefabInstance:
   m_ObjectHideFlags: 0

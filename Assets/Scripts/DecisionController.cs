@@ -63,22 +63,27 @@ public class DecisionController : MonoBehaviour {
     // Update is called once per frame
     void Update() {
         time += Time.deltaTime;
+        // Play first audio explaining game introduction
         if (time >= 3 && state == State.Start) {
             state = State.Intro;
             audioSource.clip = audioIntro;
             audioSource.Play();
         }
+
+        // Play first game event question
         if (time >= 16 && state == State.Intro) {
             state = State.FirstQuestion;
             audioSource.clip = audioInit;
             audioSource.Play();
         }
 
+        // Save rotation state for player decision check
         if (isStateInQuestion() && !audioSource.isPlaying) {
             prevRotation = transform.rotation.eulerAngles;
             state = State.CheckRotation;
         }
 
+        // Compare current player rotation to saved rotation for player decision
         if (state == State.CheckRotation) {
             var currRotation = transform.rotation.eulerAngles;
             if (currRotation.y - prevRotation.y >= 45) {
@@ -91,6 +96,7 @@ public class DecisionController : MonoBehaviour {
             }
         }
 
+        // When player is shooting rocks, check if all mates are dead
         if (state == State.Shooting) {
             bool foundActiveMate = false;
             for (int i = 0; i < shotMatesAmount; i++) {
@@ -107,16 +113,19 @@ public class DecisionController : MonoBehaviour {
             }
         }
 
+        // Lose event
+        if (state == State.Lose && !audioSource.isPlaying) {
+            SceneManager.LoadScene(deadScene);
+            Debug.Log("LOSE");
+        }
+
+        // Win event 
         if (state == State.Win && !audioSource.isPlaying) {
             Debug.Log("WIN");
             xrrigCamera.transform.position = new Vector3(39, xrrigCamera.transform.position.y, 5);
             townAudioSource.Play();
             festivalAudioSource.volume = 0.6f;
             if (!festivalAudioSource.isPlaying) festivalAudioSource.Play();
-        }
-        if (state == State.Lose && !audioSource.isPlaying) {
-            SceneManager.LoadScene(deadScene);
-            Debug.Log("LOSE");
         }
     }
 
