@@ -53,6 +53,7 @@ public class DecisionController : MonoBehaviour {
 
     // Start is called before the first frame update
     void Start() {
+        shotMatesAmount = 5;
         fetchGameObjects();
         fetchAudioClips();
         state = State.Start;
@@ -210,7 +211,6 @@ public class DecisionController : MonoBehaviour {
 
     private void fetchGameObjects() {
         xrrigCamera = GameObject.Find("XRRig");
-        shotMatesAmount = 2;
         shotMates = new GameObject[shotMatesAmount];
         for (int i = 0; i < shotMatesAmount; i++) {
             shotMates[i] = GameObject.Find(string.Format("ShotMate{0}", i+1));
