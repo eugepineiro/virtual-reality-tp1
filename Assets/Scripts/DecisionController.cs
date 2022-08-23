@@ -21,6 +21,7 @@ public class DecisionController : MonoBehaviour {
     [SerializeField] private string deadScene;
     private GameObject xrrigCamera;
     private AudioSource audioSource;
+    private AudioSource townAudioSource;
 
     private AudioClip audioInit;
     private AudioClip audioIntro;
@@ -107,6 +108,7 @@ public class DecisionController : MonoBehaviour {
         if (state == State.Win && !audioSource.isPlaying) {
             Debug.Log("WIN");
             xrrigCamera.transform.position = new Vector3(20, xrrigCamera.transform.position.y, xrrigCamera.transform.position.z);
+            townAudioSource.Play();
         }
         if (state == State.Lose && !audioSource.isPlaying) {
             SceneManager.LoadScene(deadScene);
@@ -224,6 +226,7 @@ public class DecisionController : MonoBehaviour {
         rockShooter = GameObject.Find("RockShooter");
         rockShooter.SetActive(false);
         audioSource = GetComponent<AudioSource>();
+        townAudioSource = GameObject.Find("Town").GetComponent<AudioSource>();
     }
 
     private void fetchAudioClips() {
