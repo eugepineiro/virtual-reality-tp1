@@ -5,11 +5,13 @@ using UnityEngine;
 public class RockShootController : MonoBehaviour
 {   
     Rigidbody rockRigidBody; 
+    private GameObject player;
     bool shot = false; 
 
     void Start()
     {
         rockRigidBody = GetComponent<Rigidbody>();    
+        player = GameObject.Find("Player");
     }
 
     // Update is called once per frame
@@ -18,7 +20,7 @@ public class RockShootController : MonoBehaviour
         float time = Mathf.Repeat(Time.time, 5.0F); 
 
         if ( time < 2.0) { 
-            rockRigidBody.position = new Vector3(-9,2,0); 
+            rockRigidBody.position = player.transform.position + new Vector3(0, 1.7f, 0);
             rockRigidBody.velocity = Vector3.zero; 
             shot = false; 
         } else { 
