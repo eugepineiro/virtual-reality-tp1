@@ -25,11 +25,8 @@ public class SitMateController : MonoBehaviour
     void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.name == "RockShooter") {
-            Debug.Log("COLLISION");
             sitMate.SetActive(false);
             deadMate.SetActive(true);
-        } else {
-            Debug.Log("?????????????????????");
         }
     }
 }
