@@ -45,6 +45,7 @@ public class DecisionController : MonoBehaviour {
     private GameObject deadMateWithGlass;
     private GameObject floorRock;
     private GameObject rockShooter;
+    private GameObject pickaxe;
     private GameObject[] shotMates;
     private int shotMatesAmount;
     private int questionNumber = 1;
@@ -204,6 +205,7 @@ public class DecisionController : MonoBehaviour {
             Debug.Log("Derecha");
             state = State.Win;
             audioSource.clip = audioDerDerDer;
+            pickaxe.SetActive(true);
         } else {
             Debug.Log("Izquierda");  // Throw rock, lose
             deadMate.SetActive(true);
@@ -241,6 +243,8 @@ public class DecisionController : MonoBehaviour {
         audioSource = GetComponent<AudioSource>();
         townAudioSource = GameObject.Find("Town").GetComponent<AudioSource>();
         festivalAudioSource = GameObject.Find("BonFire Festival").GetComponent<AudioSource>();
+        pickaxe = GameObject.Find("Pickaxe"); 
+        pickaxe.SetActive(false);
     }
 
     private void fetchAudioClips() {
