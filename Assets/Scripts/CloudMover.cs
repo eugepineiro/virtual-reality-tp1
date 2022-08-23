@@ -2,16 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class object_mover : MonoBehaviour
+public class CloudMover : MonoBehaviour
 {   
 
     public float velocity = 10; 
     public float angularPeriod = 8;
     public float scaleFrequency = 0.5F;
+    Vector3 initialPosition;
 
     void Start()
     {
-    
+        initialPosition = transform.position;
     
     }
 
@@ -19,7 +20,9 @@ public class object_mover : MonoBehaviour
     void Update()
     {
         transform.position += velocity * new Vector3(0,0, Time.deltaTime);
-
+        if(transform.position.z >= 100) { 
+            transform.position = new Vector3(initialPosition.x,initialPosition.y, -20);
+        }
 
         float angle = Time.time * (360/ angularPeriod);
         transform.rotation = Quaternion.Euler(0, angle, 0); 
