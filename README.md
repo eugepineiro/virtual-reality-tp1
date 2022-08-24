@@ -1,6 +1,6 @@
 # Platon VR
 
-![Portada de Platon VR](portada.png)
+![Portada de Platon VR](/Assets/Resources/portada.png)
 
 ## Integrantes
 
