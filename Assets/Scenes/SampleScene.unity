@@ -11687,7 +11687,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 541521734948221615, guid: 1fa6e597eb4938948a6c05c395bb3204, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 541521734948221615, guid: 1fa6e597eb4938948a6c05c395bb3204, type: 3}
       propertyPath: m_LocalPosition.x
@@ -11735,7 +11735,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1657240885257579477, guid: 1fa6e597eb4938948a6c05c395bb3204, type: 3}
       propertyPath: m_Name
-      value: BonFire (0)
+      value: BonFire Festival
       objectReference: {fileID: 0}
     - target: {fileID: 1928367132104760252, guid: 1fa6e597eb4938948a6c05c395bb3204, type: 3}
       propertyPath: m_RootOrder
