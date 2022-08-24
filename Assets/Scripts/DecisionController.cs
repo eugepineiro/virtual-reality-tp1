@@ -207,6 +207,7 @@ public class DecisionController : MonoBehaviour {
             state = State.Win;
             audioSource.clip = audioDerDerDer;
             pickaxe.SetActive(true);
+            floorRock.SetActive(false);
             rockHole.SetActive(true);
         } else {
             Debug.Log("Izquierda");  // Throw rock, lose
