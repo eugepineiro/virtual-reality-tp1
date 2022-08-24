@@ -1,5 +1,7 @@
 # Platon VR
 
+![Portada de Platon VR](/Assets/Resources/portada.png)
+
 ## Integrantes
 
 - [Lifschitz, Gastón](https://github.com/gaston-pebblebee)
@@ -23,4 +25,10 @@ Platón VR invita al usuario a reflexionar sobre las decisiones de su vida, adem
 ¿Podrás escapar de la caverna? 
 
 ## Trailer
+
+Mira el trailer del juego en Youtube ! 
+[Ver Trailer](https://youtu.be/R-YWcq3SIlQ)
+
+Tamién puedes ver el [Gameplay](https://drive.google.com/file/d/1BH9kSdE7FpdNw_FArW3JCsVpV7zWOpok/view?usp=sharing) (Posibles spoilers)
+
 
