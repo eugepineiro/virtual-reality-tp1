@@ -46,6 +46,7 @@ public class DecisionController : MonoBehaviour {
     private GameObject floorRock;
     private GameObject rockShooter;
     private GameObject pickaxe;
+    private GameObject rockHole;
     private GameObject[] shotMates;
     private int shotMatesAmount;
     private int questionNumber = 1;
@@ -189,7 +190,7 @@ public class DecisionController : MonoBehaviour {
             Debug.Log("Derecha");  // Refuse the deal, mate kills you
             state = State.Lose;
             audioSource.mute = true;
-            // audioSource.clip = audioIzqDerDer;
+            audioSource.clip = audioDerIzq;
             // die
         } else {
             Debug.Log("Izquierda");  // Take the deal and win
@@ -206,6 +207,7 @@ public class DecisionController : MonoBehaviour {
             state = State.Win;
             audioSource.clip = audioDerDerDer;
             pickaxe.SetActive(true);
+            rockHole.SetActive(true);
         } else {
             Debug.Log("Izquierda");  // Throw rock, lose
             deadMate.SetActive(true);
@@ -245,6 +247,8 @@ public class DecisionController : MonoBehaviour {
         festivalAudioSource = GameObject.Find("BonFire Festival").GetComponent<AudioSource>();
         pickaxe = GameObject.Find("Pickaxe"); 
         pickaxe.SetActive(false);
+        rockHole = GameObject.Find("RockHole"); 
+        rockHole.SetActive(false);
     }
 
     private void fetchAudioClips() {
