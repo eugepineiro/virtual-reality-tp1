@@ -7,7 +7,7 @@
 - [Piñeiro, Eugenia Sol](https://github.com/eugepineiro)
 - [Tarradellas del Campo, Manuel](https://github.com/mtarradellas)
 
-## Descipción
+## Descripción
 
 Se desarrolló una representación en Realidad Virtual de la “Alegoría de la Caverna” del filósofo Platón. 
 
